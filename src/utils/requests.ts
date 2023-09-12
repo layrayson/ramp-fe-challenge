@@ -47,14 +47,18 @@ export const getTransactionsByEmployee = ({ employeeId }: RequestByEmployeeParam
   return data.transactions.filter((transaction) => transaction.employee.id === employeeId)
 }
 
-export const setTransactionApproval = ({ transactionId, value }: SetTransactionApprovalParams): void => {
-  const transaction = data.transactions.find(
+export const setTransactionApproval = ({
+  transactionId,
+  value,
+}: SetTransactionApprovalParams): Transaction => {
+  const index = data.transactions.findIndex(
     (currentTransaction) => currentTransaction.id === transactionId
   )
 
-  if (!transaction) {
+  if (index === -1) {
     throw new Error("Invalid transaction to approve")
   }
+  data.transactions[index].approved = value
 
-  transaction.approved = value
+  return data.transactions[index]
 }
